@@ -1,0 +1,28 @@
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  become: true
+
+- name: Fix broken packages
+  shell: apt --fix-broken install -y
+  ignore_errors: yes
+  become: true
+
+- name: Install Docker
+  apt:
+    name: docker.io
+    state: present
+  become: true
+
+- name: Enable Docker
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+  become: true
+
+- name: Install Docker Compose
+  apt:
+    name: docker-compose-plugin
+    state: present
+  become: true

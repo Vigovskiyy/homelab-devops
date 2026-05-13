@@ -1,0 +1,5 @@
+Server Information (Fixed)
+==========================
+Random ID: lq37i893
+Created: 2026-04-16T13:17:36Z
+User: /home/yuri_ops/devops-lab/homelab-infra/terraform-basics

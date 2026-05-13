@@ -1,0 +1,20 @@
+- name: Deploy docker compose
+  hosts: docker
+  become: true
+
+  tasks:
+
+    - name: Create app directory
+      file:
+        path: /opt/app
+        state: directory
+
+    - name: Copy compose file
+      copy:
+        src: ../files/docker-compose.yml
+        dest: /opt/app/docker-compose.yml
+
+    - name: Run compose
+      shell: docker-compose up -d
+      args:
+        chdir: /opt/app
