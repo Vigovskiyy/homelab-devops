@@ -1,4 +1,4 @@
-name: Deploy Nginx
+name: Homelab Deploy
 
 on:
   push:
@@ -7,29 +7,16 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Ansible
-        run: |
-          sudo apt update
-          sudo apt install -y ansible sshpass
+      - name: Show files
+        run: ls -la
 
-      - name: Setup SSH key
+      - name: Run Ansible Ping
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-
-      - name: Add host to known_hosts
-        run: |
-          ssh-keyscan -H ${{ secrets.VM_IP }} >> ~/.ssh/known_hosts
-
-      - name: Run Ansible
-        run: |
-          ansible-playbook \
-            -i ansible/inventory/hosts.ini \
-            ansible/playbooks/nginx.yml
+          cd ansible
+          ansible all -m ping
