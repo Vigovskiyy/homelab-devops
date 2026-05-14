@@ -16,7 +16,14 @@ jobs:
       - name: Show files
         run: ls -la
 
+      - name: Show inventory
+        run: |
+          cat ansible/inventory/hosts.ini
+
       - name: Run Ansible Ping
         run: |
-          cd ansible
-          ansible all -m ping
+          ansible -i ansible/inventory/hosts.ini all -m ping
+
+      - name: Deploy nginx
+        run: |
+          ansible-playbook -i ansible/inventory/hosts.ini ansible/playbooks/nginx.yml
