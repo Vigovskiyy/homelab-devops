@@ -1,4 +1,4 @@
-name: Homelab Deploy
+name: Deploy
 
 on:
   push:
@@ -10,20 +10,15 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Show files
-        run: ls -la
-
-      - name: Show inventory
+      - name: Run docker playbook
         run: |
-          cat ansible/inventory/hosts.ini
+          cd ansible
+          ansible-playbook -i inventory/hosts.ini playbooks/docker.yml
 
-      - name: Run Ansible Ping
+      - name: Run nginx playbook
         run: |
-          ansible -i ansible/inventory/hosts.ini all -m ping
-
-      - name: Deploy nginx
-        run: |
-          ansible-playbook -i ansible/inventory/hosts.ini ansible/playbooks/nginx.yml
+          cd ansible
+          ansible-playbook -i inventory/hosts.ini playbooks/nginx.yml

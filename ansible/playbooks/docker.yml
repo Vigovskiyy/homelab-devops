@@ -2,5 +2,23 @@
   hosts: docker
   become: true
 
-  roles:
-    - docker
+  tasks:
+    - name: Install docker
+      apt:
+        name:
+          - docker.io
+          - docker-compose-v2
+        state: present
+        update_cache: yes
+
+    - name: Start docker
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Add user to docker group
+      user:
+        name: devops
+        groups: docker
+        append: yes

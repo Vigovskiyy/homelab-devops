@@ -1,14 +1,21 @@
-
-- name: Deploy nginx container
+---
+- name: Deploy nginx stack
   hosts: docker
   become: true
 
   tasks:
-    - name: Run nginx container
-      community.docker.docker_container:
-        name: nginx
-        image: nginx
-        state: started
-        restart_policy: always
-        ports:
-          - "80:80"
+
+    - name: Create app directory
+      file:
+        path: /opt/app
+        state: directory
+
+    - name: Copy compose file
+      copy:
+        src: ../roles/nginx/files/docker-compose.yml
+        dest: /opt/app/docker-compose.yml
+
+    - name: Run docker compose
+      shell: docker compose up -d
+      args:
+        chdir: /opt/app

@@ -1,15 +1,14 @@
-TF_DIR=terraform/proxmox-vm
-ANS_DIR=ansible
-
-up:
-	terraform -chdir=$(TF_DIR) apply -auto-approve
-	ansible-playbook -i $(ANS_DIR)/inventory/hosts.ini $(ANS_DIR)/playbooks/docker.yml
-
 plan:
-	terraform -chdir=$(TF_DIR) plan
+	terraform -chdir=terraform/proxmox-vm plan
 
-destroy:
-	terraform -chdir=$(TF_DIR) destroy -auto-approve
+apply:
+	terraform -chdir=terraform/proxmox-vm apply -auto-approve
 
 ping:
-	ansible -i $(ANS_DIR)/inventory/hosts.ini all -m ping
+	ansible -i ansible/inventory/hosts.ini all -m ping
+
+docker:
+	ansible-playbook -i ansible/inventory/hosts.ini ansible/playbooks/docker.yml --roles-path ansible/roles
+
+nginx:
+	ansible-playbook -i ansible/inventory/hosts.ini ansible/playbooks/nginx.yml --roles-path ansible/roles

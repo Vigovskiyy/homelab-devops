@@ -10,19 +10,15 @@
 
 - name: Install Docker
   apt:
-    name: docker.io
+    name:
+      - docker.io
+      - docker-compose-v2
     state: present
   become: true
 
 - name: Enable Docker
-  systemd:
+  service:
     name: docker
     enabled: yes
     state: started
-  become: true
-
-- name: Install Docker Compose
-  apt:
-    name: docker-compose-plugin
-    state: present
   become: true
