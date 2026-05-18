@@ -1,0 +1,14 @@
+- name: Create monitoring directory
+  file:
+    path: /opt/monitoring
+    state: directory
+
+- name: Copy compose file
+  copy:
+    src: docker-compose.yml
+    dest: /opt/monitoring/docker-compose.yml
+
+- name: Run monitoring stack
+  shell: docker compose up -d
+  args:
+    chdir: /opt/monitoring
